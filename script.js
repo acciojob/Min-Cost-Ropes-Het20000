@@ -1,23 +1,30 @@
-import heapq
+import java.util.PriorityQueue;
 
-def mincost(arr):
-    
-    heapq.heapify(arr)
-    
-    total_cost = 0
-    
-    
-    while len(arr) > 1:
+public class MinCostRopes {
+    public static int mincost(int[] arr) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         
-        first = heapq.heappop(arr)
-        second = heapq.heappop(arr)
+        for (int rope : arr) {
+            minHeap.add(rope);
+        }
         
+        int totalCost = 0;
         
-        cost = first + second
-        total_cost += cost
+        while (minHeap.size() > 1) {
+            int first = minHeap.poll();
+            int second = minHeap.poll();
+            
+            int cost = first + second;
+            totalCost += cost;
+            
+            minHeap.add(cost);
+        }
         
-        
-        heapq.heappush(arr, cost)
-    
-    return total_cost
+        return totalCost;
+    }
 
+    public static void main(String[] args) {
+        System.out.println(mincost(new int[]{4, 3, 2, 6})); // Output: 29
+        System.out.println(mincost(new int[]{1, 2, 3, 4, 5})); // Output: 33
+    }
+}
