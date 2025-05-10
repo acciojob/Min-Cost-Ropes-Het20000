@@ -1,34 +1,23 @@
-function mincost(arr) {
-  if (!arr || arr.length === 0) {
-    return 0;
-  }
+import heapq
 
-  
-  arr.sort((a, b) => a - b);
-
-  let totalCost = 0;
-  while (arr.length > 1) {
+def mincost(arr):
     
-    const smallest1 = arr.shift();
-    const smallest2 = arr.shift();
-
-
-    const currentCost = smallest1 + smallest2;
-    totalCost += currentCost;
-
+    heapq.heapify(arr)
     
-    let inserted = false;
-    for (let i = 0; i < arr.length; i++) {
-      if (currentCost <= arr[i]) {
-        arr.splice(i, 0, currentCost);
-        inserted = true;
-        break;
-      }
-    }
-    if (!inserted) {
-      arr.push(currentCost);
-    }
-  }
+    total_cost = 0
+    
+    
+    while len(arr) > 1:
+        
+        first = heapq.heappop(arr)
+        second = heapq.heappop(arr)
+        
+        
+        cost = first + second
+        total_cost += cost
+        
+        
+        heapq.heappush(arr, cost)
+    
+    return total_cost
 
-  return totalCost;
-}
