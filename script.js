@@ -1,25 +1,23 @@
 function mincost(arr) {
-    // Turn the array into a min-heap using sort
     arr.sort((a, b) => a - b);
-
     let cost = 0;
 
     while (arr.length > 1) {
-        // Remove two smallest ropes
         let first = arr.shift();
         let second = arr.shift();
+        let sum = first + second;
+        cost += sum;
 
-        let newRope = first + second;
-        cost += newRope;
-
-        // Insert the new rope and keep array sorted
-        let index = arr.findIndex(x => x > newRope);
+        // Insert in sorted position
+        let index = arr.findIndex(x => x > sum);
         if (index === -1) {
-            arr.push(newRope);
+            arr.push(sum);
         } else {
-            arr.splice(index, 0, newRope);
+            arr.splice(index, 0, sum);
         }
     }
 
     return cost;
 }
+
+module.exports = { mincost };
