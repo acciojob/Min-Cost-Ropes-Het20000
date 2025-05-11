@@ -64,7 +64,30 @@ function mincost(arr) {
         heap.insert(cost);
     }
 
-    return totalCost;
+    return totalCost;// minCost.js
+function minCost(arr) {
+    // Implementation
+}
+
+module.exports = { minCost };
+
+// index.js
+const express = require('express');
+const { minCost } = require('./minCost');
+
+const app = express();
+app.use(express.json());
+
+app.post('/mincost', (req, res) => {
+    const arr = req.body.arr;
+    const cost = minCost(arr);
+    res.json({ cost });
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
+
 }
 
 // Example test cases
