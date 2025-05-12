@@ -1,95 +1,23 @@
-class MinHeap {
-    constructor() {
-        this.heap = [];
-    }
-
-    insert(val) {
-        this.heap.push(val);
-        this.bubbleUp();
-    }
-
-    extractMin() {
-        if (this.heap.length === 1) return this.heap.pop();
-        const min = this.heap[0];
-        this.heap[0] = this.heap.pop();
-        this.bubbleDown();
-        return min;
-    }
-
-    bubbleUp() {
-        let index = this.heap.length - 1;
-        while (index > 0) {
-            let parentIndex = Math.floor((index - 1) / 2);
-            if (this.heap[parentIndex] <= this.heap[index]) break;
-            [this.heap[parentIndex], this.heap[index]] = [this.heap[index], this.heap[parentIndex]];
-            index = parentIndex;
-        }
-    }
-
-    bubbleDown() {
-        let index = 0;
-        while (true) {
-            let leftChild = 2 * index + 1;
-            let rightChild = 2 * index + 2;
-            let smallest = index;
-
-            if (leftChild < this.heap.length && this.heap[leftChild] < this.heap[smallest]) {
-                smallest = leftChild;
-            }
-            if (rightChild < this.heap.length && this.heap[rightChild] < this.heap[smallest]) {
-                smallest = rightChild;
-            }
-            if (smallest === index) break;
-            [this.heap[index], this.heap[smallest]] = [this.heap[smallest], this.heap[index]];
-            index = smallest;
-        }
-    }
-
-    size() {
-        return this.heap.length;
-    }
-}
-
 function mincost(arr) {
-    let heap = new MinHeap();
-    arr.forEach(num => heap.insert(num));
+    // Min heap using simple array with sorting
+    let heap = [...arr].sort((a, b) => a - b); // initialize min-heap
 
     let totalCost = 0;
 
-    while (heap.size() > 1) {
-        let first = heap.extractMin();
-        let second = heap.extractMin();
+    while (heap.length > 1) {
+        // Always take two smallest ropes
+        let first = heap.shift();
+        let second = heap.shift();
+
         let cost = first + second;
         totalCost += cost;
-        heap.insert(cost);
+
+        // Insert the new rope back into the heap
+        heap.push(cost);
+        heap.sort((a, b) => a - b); // Re-sort to maintain min-heap behavior
     }
 
-    return totalCost;// minCost.js
-function minCost(arr) {
-    // Implementation
+    return totalCost;
 }
 
-module.exports = { minCost };
-
-// index.js
-const express = require('express');
-const { minCost } = require('./minCost');
-
-const app = express();
-app.use(express.json());
-
-app.post('/mincost', (req, res) => {
-    const arr = req.body.arr;
-    const cost = minCost(arr);
-    res.json({ cost });
-});
-
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
-
-}
-
-// Example test cases
-console.log(mincost([4, 3, 2, 6]));  // Output: 29
-console.log(mincost([1, 2, 3, 4, 5]));  // Output: 33
+module.exports = mincost;
